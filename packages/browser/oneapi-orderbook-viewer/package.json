@@ -1,0 +1,50 @@
+{
+    "name": "@activfinancial/oneapi-orderbook-viewer",
+    "description": "A simple orderbook display using one-api.",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/activfinancial/one-api-examples"
+    },
+    "version": "0.3.10",
+    "private": false,
+    "publishConfig": {
+        "access": "public"
+    },
+    "license": "CC-BY-4.0",
+    "author": {
+        "name": "ACTIV Financial Systems, Inc.",
+        "email": "support@activfinancial.com",
+        "url": "http://www.activfinancial.com"
+    },
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
+    "files": [
+        "lib/**"
+    ],
+    "scripts": {
+        "types": "dts-generator --name \"@activfinancial/oneapi-orderbook-viewer\" --project . --out lib/index.d.ts --main \"@activfinancial/oneapi-orderbook-viewer/src/index\"",
+        "build": "yarn types && webpack --mode production",
+        "develop": "yarn types && webpack --mode development",
+        "test": "echo \"No test specified\"",
+        "watch": "webpack --mode development --watch -d",
+        "serve": "webpack-dev-server --mode development -d"
+    },
+    "dependencies": {
+        "@activfinancial/one-api": "^0.3.8",
+        "skatejs": "5.0.0-beta.3",
+        "text-encoding": "^0.7.0"
+    },
+    "devDependencies": {
+        "@types/sprintf-js": "^1.1.0",
+        "@types/text-encoding": "^0.0.35",
+        "dts-generator": "^2.1.0",
+        "sprintf-js": "^1.1.1",
+        "raw-loader": "^0.5.1",
+        "source-map-loader": "^0.2.4",
+        "ts-loader": "^5.2.1",
+        "typescript": "^3.1.2",
+        "webpack": "^4.20.2",
+        "webpack-cli": "^3.1.2",
+        "webpack-dev-server": "^3.1.9"
+    }
+}

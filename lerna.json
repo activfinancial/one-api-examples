@@ -1,0 +1,16 @@
+{
+    "lerna": "2.2.0",
+    "packages": ["packages/*", "packages/adapters/*", "packages/browser/*", "packages/node/*", "packages/openfin/*"],
+    "version": "independent",
+    "npmClient": "yarn",
+    "useWorkspaces": true,
+    "command": {
+        "bootstrap": {
+            "ci": false
+        },
+        "publish": {
+            "conventionalCommits": true,
+            "message": "chore: publish."
+        }
+    }
+}

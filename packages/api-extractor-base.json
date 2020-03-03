@@ -1,0 +1,38 @@
+/**
+ * Config file for API Extractor.  For more info, please visit: https://api-extractor.com
+ */
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
+
+    "apiReport": {
+        "enabled": false
+    },
+    "docModel": {
+        "enabled": false
+    },
+    "dtsRollup": {
+        "enabled": true,
+        "untrimmedFilePath": "<projectFolder>/lib/index.d.ts"
+    },
+    "tsdocMetadata": {
+        "enabled": false
+    },
+
+    "messages": {
+        "compilerMessageReporting": {
+            // Weirdness in cg-api types.
+            // "(TS2314) Generic type 'IteratorResult<T>' requires 1 type argument(s)."
+            "TS2314": {
+                "logLevel": "none",
+                "addToApiReportFile": false
+            }
+        },
+        "extractorMessageReporting": {
+            // Not decorating with @public @beta etc, so don't warn about it.
+            "ae-missing-release-tag": {
+                "logLevel": "none",
+                "addToApiReportFile": false
+            }
+        }
+    }
+}

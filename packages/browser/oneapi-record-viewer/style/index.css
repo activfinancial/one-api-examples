@@ -1,0 +1,119 @@
+/* Note this top-level class is added to the element in the RecordViewer component constructor. */
+.record-viewer {
+    /* Note CSS properties aren't in a :host section so the "shadow-" naming doesn't leak "up" to the light DOM. */
+
+    /** --activ-record-viewer-field-name-color: color for text in the field name column. */
+    --shadow-field-name-color: var(--activ-record-viewer-field-name-color, var(--shadow-foreground-color));
+
+    /** --activ-record-viewer-field-value-color: color for text in the field value column. */
+    --shadow-field-value-color: var(--activ-record-viewer-field-value-color, var(--shadow-foreground-color));
+
+    box-sizing: border-box;
+    font-size: 12px;
+    position: relative;
+    min-height: 100%;
+}
+
+.record-viewer * {
+    box-sizing: border-box;
+}
+
+.record-viewer-header {
+    position: sticky;
+    top: 0;
+    background: linear-gradient(var(--shadow-table-header-background-color), var(--shadow-background-color));
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.record-viewer-title {
+    display: flex;
+    flex-direction: column;
+}
+
+.record-viewer-title-symbol,
+.record-viewer-title-exchange,
+.record-viewer-title-table {
+    margin: 0 1rem 0 0;
+}
+
+.record-viewer-filter-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.record-viewer-filter-value {
+    font-family: inherit;
+    font-size: inherit;
+    display: block;
+    background-color: var(--shadow-input-background-color);
+    width: 10rem;
+    height: 2.5rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+.record-viewer-filter-button {
+    display: none;
+}
+
+.record-viewer-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--shadow-background-color);
+    z-index: 100;
+}
+
+.record-viewer-status {
+    width: auto;
+    flex: none;
+}
+
+.record-viewer-body {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+}
+
+.record-viewer-field {
+    height: 1.5rem;
+    line-height: 1.5rem;
+    min-width: 30rem;
+    flex: none;
+    display: flex;
+    justify-content: space-between;
+}
+
+.record-viewer-field-name,
+.record-viewer-field-value {
+    width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.record-viewer-field-name {
+    color: var(--shadow-field-name-color);
+    margin-right: 0.5rem;
+    text-align: right;
+}
+
+.record-viewer-field-value {
+    color: var(--shadow-field-value-color);
+    margin-left: 0.5rem;
+    text-align: left;
+    background-position: center left;
+    background-repeat: no-repeat;
+}

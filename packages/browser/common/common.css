@@ -1,0 +1,95 @@
+/* :host {
+    all: initial;
+
+	TODO: messes up some styling, e.g. options leak under header in option-viewer.
+	contain: content;
+} */
+
+.activ-one-api-webcomponent {
+    /* Note CSS properties aren't in a :host section so the "shadow-" naming doesn't leak "up" to the light DOM. */
+
+    /** The following are CSS property names that will be inherited by ACTIV one-api WebComponent examples,
+		therefore allowing some basic styling of those components (they cross the shadow DOM boundary). */
+
+    /** --activ-foreground-color: the main foreground color. */
+    --shadow-foreground-color: var(--activ-foreground-color, #003f5e);
+
+    /** --activ-background-color: the main background color. */
+    --shadow-background-color: var(--activ-background-color, #f4fbff);
+
+    /** --activ-table-header-background-color: the background color for table headers. */
+    --shadow-table-header-background-color: var(--activ-table-header-background-color, #afc3cc);
+
+    /** --activ-table-row-background-color: the background color for table rows. */
+    --shadow-table-row-background-color: var(--activ-table-row-background-color, var(--shadow-background-color));
+
+    /** --activ-table-row-background-alt-color: the alternative (every-other) background color for table rows. */
+    --shadow-table-row-background-alt-color: var(--activ-table-row-background-alt-color, #e6eff5);
+
+    /** --activ-table-row-background-hover-color: the hover color for table rows. */
+    --shadow-table-row-background-hover-color: var(--activ-table-row-background-hover-color, #9ebaca);
+
+    /** --activ-input-background-color: the background color for text input elements. */
+    --shadow-input-background-color: var(--activ-input-background-color, white);
+
+    /** --activ-link-color: the text color for hypertext links. */
+    --shadow-link-color: var(--activ-link-color, #00a5f8);
+
+    /** --activ-trend-up-color: color for prices trending up. */
+    --shadow-trend-up-color: var(--activ-trend-up-color, #128b1d);
+
+    /** --activ-trend-down-color: color for prices trending down. */
+    --shadow-trend-down-color: var(--activ-trend-down-color, #8c0000);
+
+    /** --activ-h1-color: color for h1 elements. */
+    --shadow-h1-color: var(--activ-h1-color, var(--shadow-foreground-color));
+
+    /** --activ-h2-color: color for h2 elements. */
+    --shadow-h2-color: var(--activ-h2-color, var(--shadow-foreground-color));
+
+    /** --activ-h3-color: color for h3 elements. */
+    --shadow-h3-color: var(--activ-h3-color, var(--shadow-foreground-color));
+
+    /** --activ-h4-color: color for h4 elements. */
+    --shadow-h4-color: var(--activ-h4-color, var(--shadow-foreground-color));
+
+    /** --activ-h5-color: color for h5 elements. */
+    --shadow-h5-color: var(--activ-h5-color, var(--shadow-foreground-color));
+
+    /** --activ-h6-color: color for h6 elements. */
+    --shadow-h6-color: var(--activ-h6-color, var(--shadow-foreground-color));
+
+    /** --activ-header-background: background for headers. */
+    --shadow-header-background: var(
+        --activ-header-background,
+        radial-gradient(ellipse at left top, var(--shadow-table-header-background-color) 25%, var(--shadow-background-color) 125%)
+    );
+
+    color: var(--shadow-foreground-color);
+    background: var(--shadow-background-color);
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+:host h1 {
+    color: var(--shadow-h1-color);
+}
+:host h2 {
+    color: var(--shadow-h2-color);
+}
+:host h3 {
+    color: var(--shadow-h3-color);
+}
+:host h4 {
+    color: var(--shadow-h4-color);
+}
+:host h5 {
+    color: var(--shadow-h5-color);
+}
+:host h6 {
+    color: var(--shadow-h6-color);
+}
+
+:host a[href] {
+    color: var(--shadow-link-color);
+    text-decoration: none;
+}

@@ -1,0 +1,66 @@
+/* Note this top-level class is added to the element in the OrderbookViewer component constructor. */
+.orderbook-viewer {
+    box-sizing: border-box;
+    font-size: 12px;
+    position: relative;
+    min-height: 100%;
+    min-width: 1260px;
+}
+
+.orderbook-viewer-header,
+.orderbook-viewer-body {
+    width: 100%;
+}
+
+.orderbook-viewer-header-cell,
+.orderbook-viewer-row-cell {
+    text-align: right;
+    padding: 0.2rem 0.4rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background-color: var(--shadow-table-header-background-color);
+}
+
+.orderbook-viewer-header-cell:first-child,
+.orderbook-viewer-row-cell:first-child {
+    text-align: left;
+}
+
+.orderbook-viewer-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.orderbook-viewer-table-body > tr {
+    background-color: var(--shadow-table-row-background-color);
+}
+
+.orderbook-viewer-table-body > tr:nth-child(even) {
+    background-color: var(--shadow-table-row-background-alt-color);
+}
+
+.orderbook-viewer-row-cell {
+    background-position: center left;
+    background-repeat: no-repeat;
+}
+
+.orderbook-viewer-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--shadow-background-color);
+    z-index: 100;
+}
+
+.orderbook-viewer-status {
+    width: auto;
+    flex: none;
+}

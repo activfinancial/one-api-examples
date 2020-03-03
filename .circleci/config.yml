@@ -1,0 +1,97 @@
+# Javascript Node CircleCI 2.0 configuration file.
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  build-job:
+    docker:
+      # Specify the version you desire here.
+      - image: circleci/node:10
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/mongo:3.4.4
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies.
+      - restore_cache:
+          name: Restore yarn package cache
+          keys:
+          - yarn-packages-v1-{{ checksum "yarn.lock" }}
+
+      - run: yarn install
+
+      - run: yarn build
+
+      - save_cache:
+          name: Save yarn package cache
+          paths:
+            - ~/.cache/yarn
+          key: yarn-packages-v1-{{ checksum "yarn.lock" }}
+
+      # Run tests.
+      - run: yarn test
+
+  deploy-job:
+    docker:
+      # Specify the version you desire here.
+      - image: circleci/node:latest
+
+    working_directory: ~/repo
+
+    steps:
+
+      - checkout
+
+      # Download and cache dependencies.
+      - restore_cache:
+          name: Restore yarn package cache
+          keys:
+          - yarn-packages-v1-{{ checksum "yarn.lock" }}
+
+      - run: yarn install
+
+      - save_cache:
+          name: Save yarn package cache
+          paths:
+            - ~/.cache/yarn
+          key: yarn-packages-v1-{{ checksum "yarn.lock" }}
+
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=${npm_TOKEN}" > ~/repo/.npmrc
+
+      # - run:
+      #     name: Publish packages
+      #     command: yarn run publish --yes
+
+workflows:
+   version: 2
+   build:
+     # Non-master branch just builds.
+     jobs:
+       - build-job:
+           filters:
+             branches:
+               ignore: master
+
+#    build-deploy:
+#      # Master branch builds & deploys (package.json deploy script actually builds and deploys).
+#      jobs:
+#        - deploy-job:
+#            filters:
+#              branches:
+#                only: master
+
+# This is unnecessary; the gh-pages branch doesn't contain this file so it won't know to ignore commits on the branch.
+# The fix is to have "[ci skip]" in the auto-generated commit messages on the gh-pages branch.
+general:
+  branches:
+    ignore:
+      - gh-pages

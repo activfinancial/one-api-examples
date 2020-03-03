@@ -1,0 +1,195 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome to cg-api-explorer",
+            "url": "http://localhost:8880/index.html?connect",
+            "preLaunchTask": "serve-cg-api-explorer",
+            "smartStep": true,
+            // The same as devServer's base directory (i.e. the package directory).
+            "webRoot": "${workspaceFolder}/packages/browser/cg-api-explorer",
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+                "webpack://activ_cg_api_explorer/*": "${webRoot}/*",
+                // cg-api is embedded in cg-api-explorer output so this is the path we end up with.
+                "webpack://activ_cg_api_explorer/webpack://activCgApi/*": "${workspaceFolder}/../cg-api.git/packages/cg-api/*",
+                "webpack://activ_cg_api_explorer/webpack://activCgApi/webpack://activCgApiCommon/*": "${workspaceFolder}/../cg-api.git/packages/cg-api-common/*",
+                "webpack://activ_cg_api_explorer/webpack://activCgApi/webpack://activMiddleware/*":  "${workspaceFolder}/../cg-api.git/packages/middleware/*",
+                "webpack://activ_cg_api_explorer/webpack://activCgApiFsbl/*": "${workspaceFolder}/../cg-api.git/packages/cg-api-fsbl/*",
+                "webpack://activ_cg_api_explorer/webpack://activCgApiFsbl/webpack://activCgApiJson/*": "${workspaceFolder}/../cg-api.git/packages/cg-api-json/*",
+                // Argh it won't follow symlinks. This would be preferable to decouple from my filesystem layout:
+                // "webpack://activ_cg_api_explorer/webpack://activCgApi/*": "${workspaceFolder}/node_modules/@activfinancial/cg-api/*"
+            },
+            "userDataDir": false
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome to montage-viewer",
+            "url": "http://localhost:8880/index.html",
+            "preLaunchTask": "serve-montage-viewer",
+            "smartStep": true,
+            // The same as devServer's base directory (i.e. the package directory).
+            "webRoot": "${workspaceFolder}/packages/browser/montage-viewer",
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+                "webpack://activ_montage_viewer/*": "${webRoot}/*",
+            },
+            "userDataDir": false
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome to option-chain",
+            "url": "http://localhost:8880/index.html",
+            "preLaunchTask": "serve-option-chain",
+            "smartStep": true,
+            // The same as devServer's base directory (i.e. the package directory).
+            "webRoot": "${workspaceFolder}/packages/browser/option-chain",
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+                "webpack://activ_option_chain/*": "${webRoot}/*"
+            },
+            "userDataDir": false
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome to record-viewer",
+            "url": "http://localhost:8880/index.html",
+            "preLaunchTask": "serve-record-viewer",
+            "smartStep": true,
+            // The same as devServer's base directory (i.e. the package directory).
+            "webRoot": "${workspaceFolder}/packages/browser/record-viewer",
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+                "webpack://activ_record_viewer/*": "${webRoot}/*"
+            },
+            "userDataDir": false
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome to time-series-chart",
+            "url": "http://localhost:8880/index.html",
+            "preLaunchTask": "serve-time-series-chart",
+            "smartStep": true,
+            // The same as devServer's base directory (i.e. the package directory).
+            "webRoot": "${workspaceFolder}/packages/browser/time-series-chart",
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+                "webpack://activ_time_series_chart/*": "${webRoot}/*"
+            },
+            "userDataDir": false
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome to chartiq-sample",
+            "url": "http://localhost:8880/index.html",
+            "preLaunchTask": "serve-chartiq-sample",
+            "smartStep": true,
+            "webRoot": "${workspaceFolder}/packages/chartiq/chartiq-sample",
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+                "webpack://activ_chartiq_sample/*": "${webRoot}/*"
+            },
+            "userDataDir": false
+        },
+        {
+            "type": "firefox",
+            "request": "launch",
+            "firefoxExecutable": "/usr/bin/firefox",
+            "profile": "vscode-debug",
+            "keepProfileChanges": true,
+            "name": "Launch Firefox to chartiq-sample",
+            "url": "http://localhost:8880/index.html",
+            "preLaunchTask": "serve-chartiq-sample",
+            "webRoot": "${workspaceFolder}/packages/chartiq/chartiq-sample",
+            "sourceMaps": "client",
+            "pathMappings": [
+                {
+                    "url": "webpack://activ_chartiq_sample/",
+                    "path": "${webRoot}/"
+                }
+            ]
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome to news-viewer",
+            "url": "http://localhost:8880/index.html",
+            "preLaunchTask": "serve-news-viewer",
+            "smartStep": true,
+            // The same as devServer's base directory (i.e. the package directory).
+            "webRoot": "${workspaceFolder}/packages/browser/news-viewer",
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+                "webpack://activ_news_viewer/*": "${webRoot}/*"
+            },
+            "userDataDir": false
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome to tpi-viewer",
+            "url": "http://localhost:8880/index.html",
+            "preLaunchTask": "serve-tpi-viewer",
+            "smartStep": true,
+            // The same as devServer's base directory (i.e. the package directory).
+            "webRoot": "${workspaceFolder}/packages/browser/tpi-viewer",
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+                "webpack://activ_tpi_viewer/*": "${webRoot}/*"
+            },
+            "userDataDir": false
+        },
+        {
+            "type": "chrome",
+            "request": "attach",
+            "name": "Launch activ-workstation",
+            "port": 9090,
+            "preLaunchTask": "start-activ-workstation",
+            "smartStep": true,
+            // The same as devServer's base directory (i.e. the package directory).
+            "webRoot": "${workspaceFolder}/packages/openfin/activ-workstation",
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+                "webpack://activ_workstation/*": "${webRoot}/*"
+            }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch get-match",
+            "program": "${workspaceFolder}/packages/node/get-match/lib/get-match.js",
+            "preLaunchTask": "npm: develop - packages/node/get-match",
+            "smartStep": true,
+            "sourceMaps": true,
+            "outFiles": [ "${workspaceFolder}/packages/node/get-match/lib/*" ],
+            "sourceMapPathOverrides": {
+                "webpack://getMatch/*": "${workspaceFolder}/packages/node/get-match/*",
+                "webpack://getMatch/rollup://activCgApi/*": "${workspaceFolder}/../cg-api.git/packages/cg-api/*"
+            }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch get-history",
+            "program": "${workspaceFolder}/packages/node/get-history/lib/get-history.js",
+            "preLaunchTask": "npm: develop - packages/node/get-history",
+            "smartStep": true,
+            "sourceMaps": true,
+            "outFiles": [ "${workspaceFolder}/packages/node/get-history/lib/*" ],
+            "sourceMapPathOverrides": {
+                "webpack://getHistory/*": "${workspaceFolder}/packages/node/get-history/*",
+                "webpack://getMatch/rollup://activCgApi/*": "${workspaceFolder}/../cg-api.git/packages/cg-api/*"
+            }
+        }
+    ]
+}

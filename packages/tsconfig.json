@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "moduleResolution": "node",
+        "module": "esnext",
+        "strict": true,
+        "preserveConstEnums": true,
+        "lib": ["es2017", "esnext.asynciterable", "dom"],
+        "target": "es2016",
+        "stripInternal": true,
+        "sourceMap": true,
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "noEmitOnError": true,
+        "experimentalDecorators": true
+    }
+}

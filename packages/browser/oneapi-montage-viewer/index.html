@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Montage Viewer</title>
+	<style>
+		html,
+		body {
+			height: 100%;
+		}
+
+		body {
+			margin: 0;
+			display: flex;
+			flex-direction: column;
+		}
+
+		montage-viewer {
+			overflow-y: scroll;
+			flex: 1 0;
+		}
+	</style>
+</head>
+
+<body>
+	<montage-viewer tag="type=listing and region=NA" datasourceid="1" symbologyid="65534" view="listing"></montage-viewer>
+	<script src="@activfinancial/one-api/lib/index.js"></script>
+	<script src="./lib/index.js"></script>
+	<script>
+		(() => {
+			const clientPromise = activOneApi.connect({
+				// user: "USERNAME",
+				// password: "PASSWORD",
+				host: "127.0.0.1",
+				onLogMessage(logType, message) {
+					console.log(message);
+				}
+			});
+
+			const montageViewers = document.querySelectorAll("montage-viewer");
+			for (const montageViewer of montageViewers) {
+				montageViewer.connect(clientPromise);
+			}
+		})();
+	</script>
+</body>
+
+</html>

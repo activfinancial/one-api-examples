@@ -1,0 +1,66 @@
+/* Note this top-level class is added to the element in the MontageViewer component constructor. */
+.montage-viewer {
+    box-sizing: border-box;
+    font-size: 12px;
+    position: relative;
+    min-height: 100%;
+    min-width: 1260px;
+}
+
+.montage-viewer-header,
+.montage-viewer-body {
+    width: 100%;
+}
+
+.montage-viewer-header-cell,
+.montage-viewer-row-cell {
+    text-align: right;
+    padding: 0.2rem 0.4rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.montage-viewer-header-cell:first-child,
+.montage-viewer-row-cell:first-child {
+    text-align: left;
+}
+
+.montage-viewer-header {
+    position: sticky;
+    top: 0;
+    background-color: var(--shadow-table-header-background-color);
+    z-index: 1;
+}
+
+.montage-viewer-table-body > tr {
+    background-color: var(--shadow-table-row-background-color);
+}
+
+.montage-viewer-table-body > tr:nth-child(even) {
+    background-color: var(--shadow-table-row-background-alt-color);
+}
+
+.montage-viewer-row-cell {
+    background-position: center left;
+    background-repeat: no-repeat;
+}
+
+.montage-viewer-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--shadow-background-color);
+    z-index: 100;
+}
+
+.montage-viewer-status {
+    width: auto;
+    flex: none;
+}

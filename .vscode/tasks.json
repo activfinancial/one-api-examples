@@ -1,0 +1,316 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+            "script": "develop",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": [
+				"$tsc"
+			]
+		},
+		{
+			"label": "serve-cg-api-explorer",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}/packages/browser/cg-api-explorer"
+			},
+            "command": "yarn serve",
+			"group": "build",
+			"isBackground": true,
+			"problemMatcher": {
+				"owner": "javascript",
+				"pattern": {
+					"regexp": "TODO!!!"
+				},
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": "Compiling\\.\\.\\.",
+					"endsPattern": "Built at:"
+				}
+			}
+		},
+		{
+			"label": "serve-montage-viewer",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}/packages/browser/montage-viewer"
+			},
+            "command": "yarn serve",
+			"group": "build",
+			"isBackground": true,
+			"problemMatcher": {
+				"owner": "javascript",
+				"pattern": {
+					"regexp": "TODO!!!"
+				},
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": "Compiling\\.\\.\\.",
+					"endsPattern": "Built at:"
+				}
+			}
+		},
+		{
+			"label": "serve-option-chain",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}/packages/browser/option-chain"
+			},
+            "command": "yarn serve",
+			"group": "build",
+			"isBackground": true,
+			"problemMatcher": {
+				"owner": "javascript",
+				"pattern": {
+					"regexp": "TODO!!!"
+				},
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": "Compiling\\.\\.\\.",
+					"endsPattern": "Built at:"
+				}
+			}
+		},
+		{
+			"label": "serve-record-viewer",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}/packages/browser/record-viewer"
+			},
+            "command": "yarn serve",
+			"group": "build",
+			"isBackground": true,
+			"problemMatcher": {
+				"owner": "javascript",
+				"pattern": {
+					"regexp": "TODO!!!"
+				},
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": "Compiling\\.\\.\\.",
+					"endsPattern": "Built at:"
+				}
+			}
+		},
+		{
+			"label": "serve-time-series-chart",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}/packages/browser/time-series-chart"
+			},
+            "command": "yarn serve",
+			"group": "build",
+			"isBackground": true,
+			"problemMatcher": {
+				"owner": "javascript",
+				"pattern": {
+					"regexp": "TODO!!!"
+				},
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": "Compiling\\.\\.\\.",
+					"endsPattern": "Built at:"
+				}
+			}
+		},
+		{
+			"label": "serve-chartiq-sample",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}/packages/chartiq/chartiq-sample"
+			},
+            "command": "yarn serve",
+			"group": "build",
+			"isBackground": true,
+			"problemMatcher": {
+				"owner": "javascript",
+				"pattern": {
+					"regexp": "TODO!!!"
+				},
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": "Compiling\\.\\.\\.",
+					"endsPattern": "Built at:"
+				}
+			}
+		},
+		{
+			"label": "serve-news-viewer",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}/packages/browser/news-viewer"
+			},
+            "command": "yarn serve",
+			"group": "build",
+			"isBackground": true,
+			"problemMatcher": {
+				"owner": "javascript",
+				"pattern": {
+					"regexp": "TODO!!!"
+				},
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": "Compiling\\.\\.\\.",
+					"endsPattern": "Built at:"
+				}
+			}
+		},
+		{
+			"label": "serve-tpi-viewer",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}/packages/browser/tpi-viewer"
+			},
+            "command": "yarn serve",
+			"group": "build",
+			"isBackground": true,
+			"problemMatcher": {
+				"owner": "javascript",
+				"pattern": {
+					"regexp": "TODO!!!"
+				},
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": "Compiling\\.\\.\\.",
+					"endsPattern": "Built at:"
+				}
+			}
+		},
+		{
+			"label": "serve-activ-workstation",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}/packages/openfin/activ-workstation"
+			},
+            "command": "yarn serve",
+			"group": "build",
+			"isBackground": true,
+			"problemMatcher": {
+				"owner": "javascript",
+				"pattern": {
+					"regexp": "TODO!!!"
+				},
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": "Compiling\\.\\.\\.",
+					"endsPattern": "Built at:"
+				}
+			}
+		},
+		{
+			"label": "start-activ-workstation",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}/packages/openfin/activ-workstation"
+			},
+            "command": "yarn start",
+			"group": "build",
+			"isBackground": true,
+			"problemMatcher": {
+				"owner": "external",
+				"pattern": {
+					"regexp": "TODO!!!"
+				},
+				"background": {
+					"activeOnStart": false,
+					"beginsPattern": ".*",
+					"endsPattern": ".*"
+				}
+			}
+		},
+		{
+			"type": "npm",
+			"script": "develop",
+			"path": "packages/node/get-match/",
+			"problemMatcher": [
+				"$tsc"
+			]
+		},
+		{
+			"type": "npm",
+			"script": "develop",
+			"path": "packages/browser/cg-api-explorer/",
+			"problemMatcher": [
+				"$tsc"
+			]
+		},
+		{
+			"type": "npm",
+			"script": "develop",
+			"path": "packages/browser/montage-viewer/",
+			"problemMatcher": [
+				"$tsc"
+			]
+		},
+		{
+			"type": "npm",
+			"script": "develop",
+			"path": "packages/browser/option-chain/",
+			"problemMatcher": [
+				"$tsc"
+			]
+		},
+		{
+			"type": "npm",
+			"script": "develop",
+			"path": "packages/browser/record-viewer/",
+			"problemMatcher": [
+				"$tsc"
+			]
+		},
+		{
+			"type": "npm",
+			"script": "develop",
+			"path": "packages/node/get-history/",
+			"problemMatcher": [
+				"$tsc"
+			]
+		},
+		{
+			"type": "npm",
+			"script": "develop",
+			"path": "packages/browser/time-series-chart/",
+			"problemMatcher": [
+				"$tsc"
+			]
+		},
+		{
+			"type": "npm",
+			"script": "develop",
+			"path": "packages/browser/news-viewer/",
+			"problemMatcher": [
+				"$tsc"
+			]
+		},
+		{
+			"type": "npm",
+			"script": "develop",
+			"path": "packages/browser/tpi-viewer/",
+			"problemMatcher": [
+				"$tsc"
+			]
+		},
+		{
+			"type": "npm",
+			"script": "develop",
+			"path": "packages/openfin/activ-workstation/",
+			"problemMatcher": [
+				"$tsc"
+			]
+		},
+		{
+			"type": "npm",
+			"script": "develop",
+			"path": "packages/chartiq/chartiq-sample/",
+			"problemMatcher": [
+				"$tsc"
+			]
+		}
+	]
+}

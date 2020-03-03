@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Record Viewer</title>
+	<style>
+		html,
+		body {
+			height: 100%;
+		}
+
+		body {
+			margin: 0;
+			display: flex;
+		}
+
+		record-viewer {
+			overflow-y: scroll;
+			flex: 1 0;
+		}
+	</style>
+</head>
+
+<body>
+	<!--<record-viewer symbol="CME.Q"></record-viewer>-->
+	<record-viewer symbol="MSFT.Q" datasourceid="1"></record-viewer>
+	<script src="@activfinancial/one-api/lib/index.js"></script>
+	<script src="./lib/index.js"></script>
+	<script>
+		(() => {
+			const connect = activOneApi.connect({
+				// user: "replay",
+				// password: "replay",
+				host: "127.0.0.1",
+				onLogMessage(logType, message) {
+					console.log(message);
+				}
+			});
+
+			const recordViewers = document.querySelectorAll("record-viewer");
+			for (const recordViewer of recordViewers) {
+				recordViewer.connect(connect);
+			}
+		})();
+	</script>
+</body>
+
+</html>

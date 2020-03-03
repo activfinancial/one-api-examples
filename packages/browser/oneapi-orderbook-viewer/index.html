@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Orderbook Viewer</title>
+	<style>
+		html,
+		body {
+			height: 100%;
+		}
+
+		body {
+			margin: 0;
+			display: flex;
+			flex-direction: column;
+		}
+
+		orderbook-viewer {
+			overflow-y: scroll;
+			flex: 1 0;
+		}
+	</style>
+</head>
+
+<body>
+	<orderbook-viewer symbol="MSFT.EA-MBO" datasourceid="1" symbologyid="65534" maxrows="50"></orderbook-viewer>
+	<script src="@activfinancial/one-api/lib/index.js"></script>
+	<script src="./lib/index.js"></script>
+	<script>
+		(() => {
+			const clientPromise = activOneApi.connect({
+				// user: "USERNAME",
+				// password: "PASSWORD",
+				host: "poc6-ny4-u2",
+				onLogMessage(logType, message) {
+					console.log(message);
+				}
+			});
+
+			const orderbookViewers = document.querySelectorAll("orderbook-viewer");
+			for (const orderbookViewer of orderbookViewers) {
+				orderbookViewer.connect(clientPromise);
+			}
+		})();
+	</script>
+</body>
+
+</html>
