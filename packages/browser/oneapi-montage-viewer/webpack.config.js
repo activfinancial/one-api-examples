@@ -17,7 +17,7 @@ const config = {
     },
     externals: {
         "@activfinancial/one-api": {
-            root: "activ",
+            root: "activOneApi",
             commonjs: "@activfinancial/one-api",
             commonjs2: "@activfinancial/one-api",
             amd: "@activfinancial/one-api"

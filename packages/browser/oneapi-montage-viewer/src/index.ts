@@ -6,6 +6,7 @@ import {
     Session,
     FieldId,
     FieldType,
+    Handle,
     SubscriptionHandle,
     StatusCode,
     TrendType,
@@ -13,7 +14,9 @@ import {
     DataSourceId,
     SymbologyId,
     SubscriptionMessage,
-    TRational
+    TRational,
+    ConflationType,
+    Dictionary
 } from "@activfinancial/one-api";
 
 import { FieldInfo, tableInfos } from "./tableFields";
@@ -49,14 +52,17 @@ class MontageViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
 
     private sessionPromise: Promise<Session> | null = null;
     private session: Session | null = null;
+    private subscriptionParametersHandle: Handle | null = null;
     private subscriptionHandles: SubscriptionHandle[] = [];
     private fieldInfos: FieldInfo[] = [];
+    private dictionary: Dictionary | null = null;
 
     // props.
     private datasourceid: DataSourceId = DataSourceId.activ;
-    private symbologyid: SymbologyId = SymbologyId.native;
     private tag: string = "";
     private view: string = "";
+    private conflationtype: number = ConflationType.none;
+    private conflationinterval: number = 1000;
 
     // Used by stats.js in website.
     subscribeTimestamp: number = 0;
@@ -67,10 +73,11 @@ class MontageViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
 
     static props = {
         datasourceid: props.number,
-        symbologyid: props.number,
         view: props.string,
         /** A delimited list of tag expressions. */
-        tag: props.string
+        tag: props.string,
+        conflationtype: props.number,
+        conflationinterval: props.string
     };
 
     constructor() {
@@ -102,9 +109,12 @@ class MontageViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
         try {
             this.session = await sessionPromise;
         } catch (e) {
-            this.setStatus(`Error connecting`);
+            let reason = "unknown";
+            if (typeof e === "number") reason = `${StatusCode[e]}`;
+            this.setStatus(`Error connecting: ${reason}`);
             throw new Error("Error connecting");
         }
+        this.dictionary = this.session.getMetadata().getDataSourceDictionary(this.datasourceid);
 
         try {
             this.setStatus("Connected");
@@ -162,16 +172,34 @@ class MontageViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
                 }
             }
 
+            // Set up any subscription parameters.
+            if (this.conflationtype != ConflationType.none) {
+                console.log(
+                    "Setting conflation to type '" +
+                        ConflationType[this.conflationtype] +
+                        "' with interval " +
+                        this.conflationinterval
+                );
+                this.subscriptionParametersHandle = this.session.registerSubscriptionParameters({
+                    conflationParameters: {
+                        conflationInterval: this.conflationinterval,
+                        conflationType: this.conflationtype
+                    }
+                });
+            }
+
             this.createHeaderRow();
             this.setStatus(null);
 
             // Set up subscriptions to the topic ids
             for (const topicId of topicIds) {
-                let subscription = this.session.subscribe({
-                    dataSourceId: topicId.dataSourceId,
-                    symbologyId: this.symbologyid,
-                    symbol: topicId.symbol
-                });
+                let subscription = this.session.subscribe(
+                    {
+                        dataSourceId: topicId.dataSourceId,
+                        symbol: topicId.symbol
+                    },
+                    this.subscriptionParametersHandle == null ? undefined : this.subscriptionParametersHandle
+                );
                 this.subscriptionHandles.push(subscription);
 
                 const updateRow = this.createRow();
@@ -183,7 +211,7 @@ class MontageViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
 
                         if (response.statusCode == StatusCode.success && response.message !== undefined) {
                             if (response.message.isRefresh) {
-                                this.processRefresh(response.message);
+                                this.processRefresh();
                             } else {
                                 ++this.totalUpdates;
                             }
@@ -211,6 +239,11 @@ class MontageViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
             subscriptionHandle.delete();
         }
         this.subscriptionHandles = [];
+
+        if (this.subscriptionParametersHandle != null) {
+            this.subscriptionParametersHandle.delete();
+            this.subscriptionParametersHandle = null;
+        }
         this.body.innerHTML = "";
     }
 
@@ -232,7 +265,7 @@ class MontageViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
         this.totalUpdates = 0;
     }
 
-    private processRefresh(record: SubscriptionMessage) {
+    private processRefresh() {
         ++this.responsesReturned;
     }
 
@@ -259,7 +292,8 @@ class MontageViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
 
             const cell = document.createElement("th");
 
-            cell.textContent = `${FieldId[fieldInfo.fieldId]}`;
+            cell.textContent =
+                null === this.dictionary ? `${FieldId[fieldInfo.fieldId]}` : this.dictionary.getFieldName(fieldInfo.fieldId);
 
             cell.style.width = `${width}%`;
             cell.className = "montage-viewer-header-cell";

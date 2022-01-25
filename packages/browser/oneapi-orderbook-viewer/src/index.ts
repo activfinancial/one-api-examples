@@ -103,8 +103,10 @@ class OrderbookViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
         try {
             this.session = await sessionPromise;
         } catch (e) {
-            this.setStatus(`Error connecting`);
-            return;
+            let reason = "unknown";
+            if (typeof e === "number") reason = `${StatusCode[e]}`;
+            this.setStatus(`Error connecting: ${reason}`);
+            throw new Error("Error connecting");
         }
 
         try {

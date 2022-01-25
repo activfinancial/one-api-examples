@@ -26,15 +26,17 @@
 
 <body>
 	<!--<record-viewer symbol="CME.Q"></record-viewer>-->
-	<record-viewer symbol="MSFT.Q" datasourceid="1"></record-viewer>
+	<record-viewer symbol="CAJ.Q" datasourceid="1" symbologyid="65534" conflationtype="1" conflationinterval="1000"></record-viewer>
 	<script src="@activfinancial/one-api/lib/index.js"></script>
 	<script src="./lib/index.js"></script>
 	<script>
 		(() => {
 			const connect = activOneApi.connect({
-				// user: "replay",
-				// password: "replay",
-				host: "127.0.0.1",
+				// user: "USERNAME",
+				// password: "PASSWORD",
+				host: "aop-ny4-replay.activfinancial.com",
+				isDictionaryDownloadEnabled: true,
+				// dictionaryDownloadList: "1",
 				onLogMessage(logType, message) {
 					console.log(message);
 				}

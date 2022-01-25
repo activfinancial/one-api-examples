@@ -26,7 +26,7 @@
 </head>
 
 <body>
-	<montage-viewer tag="type=listing and region=NA" datasourceid="1" symbologyid="65534" view="listing"></montage-viewer>
+	<montage-viewer tag="type=listing and region=NA" datasourceid="1" view="listing" conflationtype="2" conflationinterval="1000"></montage-viewer>
 	<script src="@activfinancial/one-api/lib/index.js"></script>
 	<script src="./lib/index.js"></script>
 	<script>
@@ -34,7 +34,9 @@
 			const clientPromise = activOneApi.connect({
 				// user: "USERNAME",
 				// password: "PASSWORD",
-				host: "127.0.0.1",
+				host: "aop-ny4-replay.activfinancial.com",
+				isDictionaryDownloadEnabled: true,
+				// dictionaryDownloadList: "1",
 				onLogMessage(logType, message) {
 					console.log(message);
 				}

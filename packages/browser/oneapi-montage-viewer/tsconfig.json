@@ -1,9 +1,5 @@
 {
-    "extends": "../../tsconfig.json",
+    "extends": "../../../tsconfig.json",
     "include": ["src/**/*.ts"],
-    "exclude": ["node_modules", "**/*.test.*"],
-    "compilerOptions": {
-        "declaration": true,
-        "declarationDir": ".types"
-    }
+    "exclude": ["node_modules"]
 }

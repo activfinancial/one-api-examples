@@ -26,7 +26,7 @@
 </head>
 
 <body>
-	<orderbook-viewer symbol="MSFT.EA-MBO" datasourceid="1" symbologyid="65534" maxrows="50"></orderbook-viewer>
+	<orderbook-viewer symbol="CAJ.EA-MBO" datasourceid="1" symbologyid="65534" maxrows="50"></orderbook-viewer>
 	<script src="@activfinancial/one-api/lib/index.js"></script>
 	<script src="./lib/index.js"></script>
 	<script>
@@ -34,7 +34,7 @@
 			const clientPromise = activOneApi.connect({
 				// user: "USERNAME",
 				// password: "PASSWORD",
-				host: "poc6-ny4-u2",
+				host: "aop-ny4-replay.activfinancial.com",
 				onLogMessage(logType, message) {
 					console.log(message);
 				}

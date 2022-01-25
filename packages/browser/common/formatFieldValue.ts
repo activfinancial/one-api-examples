@@ -7,11 +7,8 @@ import { Field, FieldId, FieldType, Rational, TRational, Trend, TrendType } from
 import { sprintf } from "sprintf-js";
 import { TextDecoder } from "text-encoding";
 
-import trendUpArrow from "!raw-loader!./trendUpArrow.svg";
-import trendDownArrow from "!raw-loader!./trendDownArrow.svg";
-
-const uriEncodedTrendUpArrow = encodeURIComponent(trendUpArrow);
-const uriEncodedTrendDownArrow = encodeURIComponent(trendDownArrow);
+import trendUpArrow from "!url-loader!./trendUpArrow.svg";
+import trendDownArrow from "!url-loader!./trendDownArrow.svg";
 
 // ---------------------------------------------------------------------------------------------------------------------------------
 
@@ -136,12 +133,12 @@ export function applyTrendStyle(trend: Trend, element: HTMLElement) {
 
     switch (trend) {
         case Trend.up:
-            element.style.backgroundImage = `url('data:image/svg+xml,${uriEncodedTrendUpArrow}')`;
+            element.style.backgroundImage = `url('${trendUpArrow}')`;
             element.style.color = "var(--shadow-trend-up-color)";
             break;
 
         case Trend.down:
-            element.style.backgroundImage = `url('data:image/svg+xml,${uriEncodedTrendDownArrow}')`;
+            element.style.backgroundImage = `url('${trendDownArrow}')`;
             element.style.color = "var(--shadow-trend-down-color)";
             break;
 

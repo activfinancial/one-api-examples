@@ -12,10 +12,10 @@ import {
     SubscriptionMessage,
     SubscriptionHandle,
     DataSourceId,
-    DictionaryId,
-    DictionaryHelper,
+    Dictionary,
     SymbologyId,
-    PlatformFieldId
+    ConflationType,
+    Handle
 } from "@activfinancial/one-api";
 
 import { formatField as formatFieldInternal, applyTrendStyle, clearTrendStyle } from "../../common/formatFieldValue";
@@ -60,6 +60,8 @@ interface Attributes {
     datasourceid: DataSourceId;
     symbologyid: SymbologyId;
     symbol: string;
+    conflationtype: ConflationType;
+    conflationinterval: number;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -78,9 +80,9 @@ class RecordViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
 
     private sessionPromise: Promise<Session> | null = null;
     private session: Session | null = null;
-    private dictionaryId: number = DictionaryId.activ;
-    private dictionaryHelper: DictionaryHelper | null = null;
+    private subscriptionParametersHandle: Handle | null = null;
     private subscriptionHandle: SubscriptionHandle | null = null;
+    private dictionary: Dictionary | null = null;
 
     private fields: FieldData[] = [];
 
@@ -104,11 +106,15 @@ class RecordViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
     private datasourceid: number = DataSourceId.activ;
     private symbologyid: number = SymbologyId.native;
     private symbol: string | null = null;
+    private conflationtype: number = ConflationType.none;
+    private conflationinterval: number = 1000;
 
     static props = {
         datasourceid: props.number,
         symbologyid: props.number,
-        symbol: props.string
+        symbol: props.string,
+        conflationtype: props.number,
+        conflationinterval: props.string
     };
 
     constructor() {
@@ -161,32 +167,13 @@ class RecordViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
         try {
             this.session = await sessionPromise;
         } catch (e) {
-            this.setStatus(`Error connecting`);
+            let reason = "unknown";
+            if (typeof e === "number") reason = `${StatusCode[e]}`;
+            this.setStatus(`Error connecting: ${reason}`);
             throw new Error("Error connecting");
         }
+        this.dictionary = this.session.getMetadata().getDataSourceDictionary(this.datasourceid);
         this.setStatus("Connected");
-
-        try {
-            this.setStatus("Getting meta data");
-            const metadataResponse = await this.session.snapshot({
-                dataSourceId: DataSourceId.local,
-                symbol: "gateway/data-source/" + this.datasourceid.toString()
-            });
-            if (metadataResponse.fieldData.isFieldPresent(PlatformFieldId.FID_DICTIONARY)) {
-                const field = metadataResponse.fieldData.getField(PlatformFieldId.FID_DICTIONARY);
-                if (field.isDefined) this.dictionaryId = field.value as number;
-            }
-            metadataResponse.delete();
-        } catch (e) {
-            this.setStatus(`Error fetching meta data`);
-        }
-
-        try {
-            this.setStatus("Getting dictionary helper");
-            this.dictionaryHelper = await this.session.getDictionaryHelper(this.dictionaryId);
-        } catch (e) {
-            this.setStatus(`Error fetching dictionary helper`);
-        }
 
         try {
             this.subscribe();
@@ -218,12 +205,31 @@ class RecordViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
         this.setStatus("Subscribing...");
 
         try {
+            // Set up any subscription parameters.
+            if (this.conflationtype != ConflationType.none) {
+                console.log(
+                    "Setting conflation to type '" +
+                        ConflationType[this.conflationtype] +
+                        "' with interval " +
+                        this.conflationinterval
+                );
+                this.subscriptionParametersHandle = this.session.registerSubscriptionParameters({
+                    conflationParameters: {
+                        conflationInterval: this.conflationinterval,
+                        conflationType: this.conflationtype
+                    }
+                });
+            }
+
             // Initiate the async request.
-            this.subscriptionHandle = this.session.subscribe({
-                dataSourceId: this.datasourceid,
-                symbologyId: this.symbologyid,
-                symbol: this.symbol
-            });
+            this.subscriptionHandle = this.session.subscribe(
+                {
+                    dataSourceId: this.datasourceid,
+                    symbologyId: this.symbologyid,
+                    symbol: this.symbol
+                },
+                this.subscriptionParametersHandle == null ? undefined : this.subscriptionParametersHandle
+            );
 
             // Asynchonously iterate over the messages.
             for await (const response of this.subscriptionHandle) {
@@ -246,7 +252,9 @@ class RecordViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
                 }
             }
         } catch (e) {
-            this.setStatus(`Error subscribing: ${StatusCode[e]}`);
+            let reason = "unknown";
+            if (typeof e === "number") reason = `${StatusCode[e]}`;
+            this.setStatus("Error subscribing: " + reason);
         }
     }
 
@@ -254,6 +262,10 @@ class RecordViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
         if (this.subscriptionHandle != null) {
             this.subscriptionHandle.delete();
             this.subscriptionHandle = null;
+        }
+        if (this.subscriptionParametersHandle != null) {
+            this.subscriptionParametersHandle.delete();
+            this.subscriptionParametersHandle = null;
         }
         this.body.innerHTML = "";
     }
@@ -281,11 +293,7 @@ class RecordViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
         this.fields = [];
 
         for (const field of record.fieldData) {
-            let fieldName = field.id.toString();
-            if (null != this.dictionaryHelper) {
-                let fieldInfo = this.dictionaryHelper.getFieldInfo(field.id);
-                fieldName = fieldInfo.name;
-            }
+            const fieldName = null === this.dictionary ? field.id.toString() : this.dictionary.getFieldName(field.id);
             const fieldData = {
                 name: fieldName,
                 render: this.createFieldElement(fieldName, fieldName),

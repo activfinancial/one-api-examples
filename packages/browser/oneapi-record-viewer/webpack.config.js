@@ -13,11 +13,12 @@ const config = {
         alias: {
             skatejs: "skatejs/esnext"
         },
-        extensions: [".ts", ".js"]
+        extensions: [".ts", ".js"],
+        symlinks: false
     },
     externals: {
         "@activfinancial/one-api": {
-            root: "activ",
+            root: "activOneApi",
             commonjs: "@activfinancial/one-api",
             commonjs2: "@activfinancial/one-api",
             amd: "@activfinancial/one-api"
