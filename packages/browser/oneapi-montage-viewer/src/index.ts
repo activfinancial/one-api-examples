@@ -39,6 +39,8 @@ interface Attributes {
     symbologyid: SymbologyId;
     tag: string;
     view: string;
+    conflationtype: ConflationType;
+    conflationinterval: number;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -62,7 +64,7 @@ class MontageViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
     private tag: string = "";
     private view: string = "";
     private conflationtype: number = ConflationType.none;
-    private conflationinterval: number = 1000;
+    private conflationinterval: number = 100;
 
     // Used by stats.js in website.
     subscribeTimestamp: number = 0;

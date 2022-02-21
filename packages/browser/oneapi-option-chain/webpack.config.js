@@ -5,7 +5,7 @@ const config = {
     output: {
         filename: "index.js",
         path: path.resolve(__dirname, "lib"),
-        library: "activ_one_api_record_viewer",
+        library: "activ_oneapi_option_chain",
         libraryTarget: "umd"
     },
     devtool: "source-map",
@@ -13,8 +13,7 @@ const config = {
         alias: {
             skatejs: "skatejs/esnext"
         },
-        extensions: [".ts", ".js"],
-        symlinks: false
+        extensions: [".ts", ".js"]
     },
     externals: {
         "@activfinancial/one-api": {

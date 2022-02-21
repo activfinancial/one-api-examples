@@ -5,7 +5,7 @@
         "type": "git",
         "url": "https://github.com/activfinancial/one-api"
     },
-    "version": "0.5.3",
+    "version": "0.6.9",
     "private": false,
     "publishConfig": {
         "access": "public"
@@ -22,7 +22,7 @@
         "lib/**"
     ],
     "scripts": {
-        "types": "dts-generator --name \"@activfinancial/oneapi-orderbook-viewer\" --project . --out lib/index.d.ts --main \"@activfinancial/oneapi-orderbook-viewer/src/index\"",
+        "types": "dts-generator --prefix \"@activfinancial/oneapi-orderbook-viewer\" --name \"@activfinancial/oneapi-orderbook-viewer\" --project . --out lib/index.d.ts --main \"@activfinancial/oneapi-orderbook-viewer/src/index\"",
         "build": "yarn types && webpack --mode production",
         "develop": "yarn types && webpack --mode development",
         "test": "echo \"No test specified\"",
@@ -30,7 +30,7 @@
         "serve": "webpack-dev-server --mode development -d"
     },
     "dependencies": {
-        "@activfinancial/one-api": "^0.5.4",
+        "@activfinancial/one-api": "^0.7.0",
         "skatejs": "5.0.0-beta.3"
     },
     "devDependencies": {
@@ -38,11 +38,11 @@
         "dts-generator": "^3.0.0",
         "raw-loader": "^4.0.2",
         "sprintf-js": "^1.1.2",
-        "ts-loader": "^6.2.1",
-        "typescript": "^3.9.7",
-        "webpack": "^4.20.2",
-        "webpack-cli": "^3.1.2",
-        "webpack-dev-server": "^3.1.9"
+        "ts-loader": "^9.2.6",
+        "typescript": "^4.5.5",
+        "webpack": "^5.68.0",
+        "webpack-cli": "^4.9.2",
+        "webpack-dev-server": "^4.7.4"
     },
     "gitHead": "d06c30af272d9faa623ae6056ea4c654a5a0a851"
 }

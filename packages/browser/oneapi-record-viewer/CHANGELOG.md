@@ -3,6 +3,87 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/activfinancial/one-api/compare/@activfinancial/oneapi-record-viewer@0.6.7...@activfinancial/oneapi-record-viewer@0.7.0) (2022-02-21)
+
+
+### Features
+
+* **record-viewer:** add display of company and exchange. ([220e04c](https://github.com/activfinancial/one-api/commit/220e04c2db43554d77c9364c4eeab286be6a2f23))
+
+
+
+
+
+## [0.6.7](https://github.com/activfinancial/one-api/compare/@activfinancial/oneapi-record-viewer@0.6.6...@activfinancial/oneapi-record-viewer@0.6.7) (2022-02-14)
+
+**Note:** Version bump only for package @activfinancial/oneapi-record-viewer
+
+
+
+
+
+## [0.6.6](https://github.com/activfinancial/one-api/compare/@activfinancial/oneapi-record-viewer@0.6.5...@activfinancial/oneapi-record-viewer@0.6.6) (2022-02-11)
+
+**Note:** Version bump only for package @activfinancial/oneapi-record-viewer
+
+
+
+
+
+## [0.6.5](https://github.com/activfinancial/one-api/compare/@activfinancial/oneapi-record-viewer@0.6.4...@activfinancial/oneapi-record-viewer@0.6.5) (2022-02-11)
+
+**Note:** Version bump only for package @activfinancial/oneapi-record-viewer
+
+
+
+
+
+## [0.6.4](https://github.com/activfinancial/one-api/compare/@activfinancial/oneapi-record-viewer@0.6.3...@activfinancial/oneapi-record-viewer@0.6.4) (2022-02-11)
+
+**Note:** Version bump only for package @activfinancial/oneapi-record-viewer
+
+
+
+
+
+## [0.6.3](https://github.com/activfinancial/one-api/compare/@activfinancial/oneapi-record-viewer@0.6.2...@activfinancial/oneapi-record-viewer@0.6.3) (2022-02-09)
+
+**Note:** Version bump only for package @activfinancial/oneapi-record-viewer
+
+
+
+
+
+## [0.6.2](https://github.com/activfinancial/one-api/compare/@activfinancial/oneapi-record-viewer@0.6.1...@activfinancial/oneapi-record-viewer@0.6.2) (2022-02-09)
+
+**Note:** Version bump only for package @activfinancial/oneapi-record-viewer
+
+
+
+
+
+## [0.6.1](https://github.com/activfinancial/one-api/compare/@activfinancial/oneapi-record-viewer@0.6.0...@activfinancial/oneapi-record-viewer@0.6.1) (2022-01-26)
+
+
+### Bug Fixes
+
+* **samples:** update to fixed one-api version. ([1ee5304](https://github.com/activfinancial/one-api/commit/1ee530478d5dfdd05dfee5a780070bfdbaffa445))
+
+
+
+
+
+# [0.6.0](https://github.com/activfinancial/one-api/compare/@activfinancial/oneapi-record-viewer@0.5.3...@activfinancial/oneapi-record-viewer@0.6.0) (2022-01-25)
+
+
+### Features
+
+* **samples:** add support for conflation. ([2d60f66](https://github.com/activfinancial/one-api/commit/2d60f66767255e16af329b9e3194f14b7856fd8e))
+
+
+
+
+
 ## [0.5.3](https://github.com/activfinancial/one-api/compare/@activfinancial/oneapi-record-viewer@0.5.2...@activfinancial/oneapi-record-viewer@0.5.3) (2021-02-16)
 
 

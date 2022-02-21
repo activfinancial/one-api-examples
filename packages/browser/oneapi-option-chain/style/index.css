@@ -1,0 +1,264 @@
+/* Note this top-level class is added to the element in the OptionChain component constructor. */
+.option-chain {
+    /* Note CSS properties aren't in a :host section so the "shadow-" naming doesn't leak "up" to the light DOM. */
+
+    /** --activ-option-chain-side-header-foreground-color: foreground color for the option side header row. */
+    --shadow-side-header-foreground-color: var(--activ-option-chain-side-header-foreground-color, var(--shadow-background-color));
+
+    /** --activ-option-chain-side-header-background-color: background color for the option side header row. */
+    --shadow-side-header-background-color: var(--activ-option-chain-side-header-background-color, #31005e);
+
+    /** --activ-option-chain-strike-column-foreground-color: foreground color for the strike/exchange columns. */
+    --shadow-strike-column-foreground-color: var(
+        --activ-option-chain-strike-column-foreground-color,
+        var(--shadow-side-header-foreground-color)
+    );
+
+    /** --activ-option-chain-strike-column-background-color: background color for the strike/exchange columns. */
+    --shadow-strike-column-background-color: var(
+        --activ-option-chain-strike-column-background-color,
+        var(--shadow-side-header-background-color)
+    );
+
+    /** --activ-option-chain-strike-column-background-alt-color: alternative (every-other) background color for the strike/exchange columns. */
+    --shadow-strike-column-background-alt-color: var(--activ-option-chain-strike-column-background-alt-color, #2f2374);
+
+    /** --activ-option-chain-at-the-money-color: highlight color for options above/below the money. */
+    --shadow-at-the-money-color: var(--activ-option-chain-at-the-money-color, #4e20f5);
+
+    box-sizing: border-box;
+    font-size: 12px;
+    position: relative;
+    min-height: 100%;
+}
+
+.option-chain * {
+    box-sizing: border-box;
+    --underlying-header-height: 4rem;
+    --option-header-height: 1.3rem;
+}
+
+.option-chain-underlying-header {
+    position: sticky;
+    top: 0;
+    height: var(--underlying-header-height);
+
+    background: var(--shadow-header-background);
+    justify-content: space-between;
+    align-items: center;
+
+    z-index: 1;
+
+    display: flex;
+    flex-direction: row;
+}
+
+.option-chain-underlying-header-symbol-info {
+    flex: 3 1 0;
+}
+
+.option-chain-underlying-header-symbol-info > h2,
+.option-chain-underlying-header-symbol-info > h4,
+.option-chain-underlying-header-symbol-info > h6 {
+    margin-top: initial;
+    margin-bottom: initial;
+    margin-left: 0.5rem;
+}
+
+.option-chain-underlying-header-row {
+    display: flex;
+    flex: 10 1 0;
+}
+.option-chain-underlying-header-row > table {
+    width: 100%;
+}
+
+.option-chain-underlying-header-splitter {
+    width: 1rem;
+    text-align: center;
+}
+
+.option-chain-underlying-header-cell {
+    width: 120px;
+    margin-left: 1%;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.option-chain-underlying-header-cell-label {
+    font-weight: bold;
+    text-align: right;
+}
+
+.option-chain-underlying-header [data-activ-field-id="FID_BID"],
+.option-chain-underlying-header [data-activ-field-id="FID_BID_SIZE"],
+.option-chain-underlying-header [data-activ-field-id="FID_TRADE"],
+.option-chain-underlying-header [data-activ-field-id="FID_NET_CHANGE"] {
+    text-align: right;
+}
+
+.option-chain-underlying-header [data-activ-field-id="FID_BID"],
+.option-chain-underlying-header [data-activ-field-id="FID_TRADE"],
+.option-chain-underlying-header [data-activ-field-id="FID_NET_CHANGE"] {
+    background-position: right;
+    padding-right: 1rem;
+}
+
+.option-chain-underlying-header [data-activ-field-id="FID_ASK"],
+.option-chain-underlying-header [data-activ-field-id="FID_ASK_SIZE"],
+.option-chain-underlying-header [data-activ-field-id="FID_PERCENT_CHANGE"] {
+    margin-left: 0;
+    text-align: left;
+}
+
+.option-chain-underlying-header [data-activ-field-id="FID_ASK"],
+.option-chain-underlying-header [data-activ-field-id="FID_PERCENT_CHANGE"] {
+    background-position: left;
+    padding-left: 1rem;
+}
+
+.option-chain-body {
+    position: relative;
+    flex: none;
+}
+
+.option-chain-header-row,
+.option-chain-sub-header-row {
+    display: flex;
+    position: sticky;
+    height: var(--option-header-height);
+    line-height: var(--option-header-height);
+}
+
+.option-chain-header-row {
+    background-color: var(--shadow-side-header-background-color);
+    color: var(--shadow-side-header-foreground-color);
+    font-size: 1rem;
+    top: var(--underlying-header-height);
+    z-index: 2;
+}
+
+.option-chain-sub-header-row {
+    background-color: var(--shadow-background-color);
+    font-weight: bold;
+    top: calc(var(--underlying-header-height) + var(--option-header-height));
+    z-index: 2;
+}
+
+.option-chain-header-cell,
+.option-chain-sub-header-cell,
+.option-chain-option-cell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: right;
+    padding-right: 1rem;
+}
+
+.option-chain-header-cell {
+    width: 50%;
+    text-align: center;
+}
+
+.option-chain-header-cell,
+.option-chain-sub-header-cell {
+    border-bottom: 0.05rem solid var(--shadow-side-header-background-color);
+}
+
+.option-chain-sub-header-cell.option-chain-call,
+.option-chain-option-cell.option-chain-call {
+    margin-left: 0.1%;
+}
+
+.option-chain-sub-header-cell.option-chain-put,
+.option-chain-option-cell.option-chain-put {
+    margin-right: 0.1%;
+}
+
+.option-chain-options {
+    position: relative;
+}
+
+.option-chain-expiry-section {
+    position: relative;
+}
+
+.option-chain-expiry-row {
+    position: sticky;
+    top: calc(var(--underlying-header-height) + var(--option-header-height) + var(--option-header-height));
+    background-color: var(--shadow-table-header-background-color);
+    line-height: var(--option-header-height);
+    text-align: center;
+    cursor: pointer;
+    border-style: solid;
+    border-width: 0.01rem 0 0 0;
+    border-color: var(--shadow-table-row-background-hover-color);
+}
+
+.option-chain-expiry-row:hover {
+    background-color: var(--shadow-table-row-background-hover-color);
+}
+
+.option-chain-expiry-row-expanded {
+    font-weight: bold;
+}
+
+.option-chain-option-row {
+    display: flex;
+    line-height: var(--option-header-height);
+    height: var(--option-header-height);
+}
+
+.option-chain-option-row:nth-child(odd) {
+    background-color: var(--shadow-table-row-background-alt-color);
+}
+
+.option-chain-option-cell {
+    background-position: center right;
+    background-repeat: no-repeat;
+}
+
+.option-chain-center-cells {
+    background-color: var(--shadow-strike-column-background-color);
+    border-color: var(--shadow-strike-column-background-color);
+    color: var(--shadow-strike-column-foreground-color);
+    text-align: center;
+    padding-right: 0;
+    border-style: solid;
+    border-width: 0 0.25rem;
+    font-weight: normal;
+}
+
+.option-chain-sub-header-cell.option-chain-center-cells {
+    line-height: 1rem;
+    font-size: 1rem;
+    font-weight: normal;
+}
+
+.option-chain-option-row:nth-child(odd) > .option-chain-center-cells {
+    background-color: var(--shadow-strike-column-background-alt-color);
+    border-color: var(--shadow-strike-column-background-alt-color);
+}
+
+.option-chain-below-the-money > .option-chain-center-cells[data-activ-field-id="FID_STRIKE_PRICE"] {
+    border-left-color: var(--shadow-at-the-money-color) !important;
+}
+
+.option-chain-above-the-money > .option-chain-center-cells[data-activ-field-id="FID_STRIKE_PRICE"] {
+    border-right-color: var(--shadow-at-the-money-color) !important;
+}
+
+.option-chain-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--shadow-background-color);
+    z-index: 100;
+}

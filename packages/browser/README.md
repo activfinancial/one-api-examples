@@ -1,6 +1,6 @@
 Examples here are for running in a browser environment.
 
-### montage-viewer / oneapi-record-viewer / orderbook-viewer
+### oneapi-montage-viewer / oneapi-record-viewer / oneapi-orderbook-viewer / oneapi-option-chain
 
 These examples do not provide a UI for entering ACTIV feed credentials; you can edit the values in `packages/examples/browser/*/index.html` as appropriate.
 
@@ -35,12 +35,23 @@ These samples all support the following CSS properties to allow some basic custo
 * `--activ-trend-down-color`: color for prices trending down.
 * `--activ-h1-color`: color for h1 elements; h1-h6 are supported.
 
-#### record-viewer
+#### oneapi-record-viewer
 
-record-viewer additionally supports:
+oneapi-record-viewer additionally supports:
 
 * `--activ-record-viewer-field-name-color`: color for text in the field name column.
 * `--activ-record-viewer-field-value-color`: color for text in the field value column.
+
+#### oneapi-option-chain
+
+onepia-option-chain additionally supports:
+
+* `--activ-option-chain-side-header-foreground-color`: foreground color for the option side header row.
+* `--activ-option-chain-side-header-background-color`: background color for the option side header row.
+* `--activ-option-chain-strike-column-foreground-color`: foreground color for the strike/exchange columns.
+* `--activ-option-chain-strike-column-background-color`: background color for the strike/exchange columns.
+* `--activ-option-chain-strike-column-background-alt-color`: alternative (every-other) background color for the strike/exchange columns.
+* `--activ-option-chain-at-the-money-color`: highlight color for options above/below the money
 
 ### Visual Studio Code
 

@@ -12,28 +12,28 @@
 		therefore allowing some basic styling of those components (they cross the shadow DOM boundary). */
 
     /** --activ-foreground-color: the main foreground color. */
-    --shadow-foreground-color: var(--activ-foreground-color, #003f5e);
+    --shadow-foreground-color: var(--activ-foreground-color, #1b005e);
 
     /** --activ-background-color: the main background color. */
-    --shadow-background-color: var(--activ-background-color, #f4fbff);
+    --shadow-background-color: var(--activ-background-color, #f4f4f5);
 
     /** --activ-table-header-background-color: the background color for table headers. */
-    --shadow-table-header-background-color: var(--activ-table-header-background-color, #afc3cc);
+    --shadow-table-header-background-color: var(--activ-table-header-background-color, #cbc9d0);
 
     /** --activ-table-row-background-color: the background color for table rows. */
     --shadow-table-row-background-color: var(--activ-table-row-background-color, var(--shadow-background-color));
 
     /** --activ-table-row-background-alt-color: the alternative (every-other) background color for table rows. */
-    --shadow-table-row-background-alt-color: var(--activ-table-row-background-alt-color, #e6eff5);
+    --shadow-table-row-background-alt-color: var(--activ-table-row-background-alt-color, #ebe6f5);
 
     /** --activ-table-row-background-hover-color: the hover color for table rows. */
-    --shadow-table-row-background-hover-color: var(--activ-table-row-background-hover-color, #9ebaca);
+    --shadow-table-row-background-hover-color: var(--activ-table-row-background-hover-color, #ab9eca);
 
     /** --activ-input-background-color: the background color for text input elements. */
     --shadow-input-background-color: var(--activ-input-background-color, white);
 
     /** --activ-link-color: the text color for hypertext links. */
-    --shadow-link-color: var(--activ-link-color, #00a5f8);
+    --shadow-link-color: var(--activ-link-color, #5e23e1);
 
     /** --activ-trend-up-color: color for prices trending up. */
     --shadow-trend-up-color: var(--activ-trend-up-color, #128b1d);

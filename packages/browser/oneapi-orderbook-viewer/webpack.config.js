@@ -44,9 +44,16 @@ const config = {
         // Also, since switching to yarn workspaces, there are no local node_modules - they are
         // all at the root. So serve the root, too.
         port: 8880,
-        contentBase: [__dirname, path.join(__dirname, "../../../../node_modules")],
-        watchContentBase: true,
-        publicPath: "/lib/"
+        static: [
+            {
+                directory: path.resolve(__dirname),
+                watch: true
+            },
+            {
+                directory: path.join(__dirname, "../../../../node_modules"),
+                watch: true
+            }
+        ]
     }
 };
 

@@ -15,11 +15,12 @@ import {
     Dictionary,
     SymbologyId,
     ConflationType,
-    Handle
+    Handle,
+    getExchangeCode
 } from "@activfinancial/one-api";
 
 import { formatField as formatFieldInternal, applyTrendStyle, clearTrendStyle } from "../../common/formatFieldValue";
-import { addUnloadHandler } from "../../../common/utils";
+import { addUnloadHandler, getExchangeName } from "../../../common/utils";
 
 // Note leading ! overrides webpack config matching css files.
 import commonCss from "!raw-loader!../../common/common.css";
@@ -73,6 +74,7 @@ class RecordViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
     // TODO get rid of the !
     private renderRoot!: ShadowRoot;
     private readonly symbolLabel: HTMLHeadingElement;
+    private readonly exchangeLabel: HTMLHeadingElement;
     private readonly filterValue: HTMLInputElement;
     private readonly body: HTMLTableElement;
     private readonly status: HTMLDivElement;
@@ -83,6 +85,8 @@ class RecordViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
     private subscriptionParametersHandle: Handle | null = null;
     private subscriptionHandle: SubscriptionHandle | null = null;
     private dictionary: Dictionary | null = null;
+    private companyName: string = "";
+    private exchangeName: string = "";
 
     private fields: FieldData[] = [];
 
@@ -107,7 +111,7 @@ class RecordViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
     private symbologyid: number = SymbologyId.native;
     private symbol: string | null = null;
     private conflationtype: number = ConflationType.none;
-    private conflationinterval: number = 1000;
+    private conflationinterval: number = 100;
 
     static props = {
         datasourceid: props.number,
@@ -125,6 +129,7 @@ class RecordViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
         element.innerHTML = `<style>${commonCss}${indexCss}</style>${indexHtml}`;
         this.renderRoot.appendChild(element);
         this.symbolLabel = this.renderRoot.querySelector(".record-viewer-title-symbol") as HTMLHeadingElement;
+        this.exchangeLabel = this.renderRoot.querySelector(".record-viewer-title-exchange") as HTMLHeadingElement;
 
         // Function for any activity in the filter input; just redraw display after updating visible state for all fields.
         const handleFilterEvent = (e: Event) => {
@@ -205,6 +210,38 @@ class RecordViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
         this.setStatus("Subscribing...");
 
         try {
+            // Look up the company symbol.
+            const companyTopicIdHandle = this.session.query({
+                dataSourceId: this.datasourceid,
+                tagExpression: `symbol=${this.symbol} navigate=company`
+            });
+            let companySymbol = null;
+            for await (let topicIdResult of companyTopicIdHandle) {
+                if (undefined !== topicIdResult.message) {
+                    companySymbol = topicIdResult.message.topicId.symbol;
+                    break;
+                } else {
+                    this.setStatus(`Error finding company: ${StatusCode[topicIdResult.statusCode]}`);
+                }
+            }
+            companyTopicIdHandle.delete();
+
+            // Get a snapshot of the data for the company.
+            if (null != companySymbol) {
+                const companyResultPromise = this.session.snapshot({
+                    dataSourceId: this.datasourceid,
+                    symbol: companySymbol
+                });
+
+                const companyMessage = await companyResultPromise;
+                if (companyMessage.fieldData.isFieldPresent(FieldId.FID_NAME)) {
+                    this.companyName = companyMessage.fieldData.getField(FieldId.FID_NAME).value!.toString();
+                }
+                companyMessage.delete();
+            }
+
+            this.exchangeLabel.textContent = await this.exchangeToString();
+
             // Set up any subscription parameters.
             if (this.conflationtype != ConflationType.none) {
                 console.log(
@@ -267,6 +304,7 @@ class RecordViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
             this.subscriptionParametersHandle.delete();
             this.subscriptionParametersHandle = null;
         }
+        this.exchangeName = "";
         this.body.innerHTML = "";
     }
 
@@ -319,6 +357,21 @@ class RecordViewer extends withProps(withRenderer(withUnique(HTMLElement))) {
         // Special case for updateId as it's not in FieldData.
         this.updateIdField.value = update.updateId;
         this.updateField(this.updateIdField);
+    }
+
+    private async exchangeToString() {
+        let res = this.companyName;
+
+        this.exchangeName = await getExchangeName(getExchangeCode(this.symbol!), this.session!);
+        if (this.exchangeName.length > 0) {
+            if (res.length > 0) {
+                res += " ";
+            }
+
+            res += `(${this.exchangeName})`;
+        }
+
+        return res;
     }
 
     private updateField(field: Field) {

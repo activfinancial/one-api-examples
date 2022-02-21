@@ -5,7 +5,7 @@
         "type": "git",
         "url": "https://github.com/activfinancial/one-api"
     },
-    "version": "0.5.3",
+    "version": "0.7.0",
     "private": false,
     "publishConfig": {
         "access": "public"
@@ -22,15 +22,15 @@
         "lib/**"
     ],
     "scripts": {
-        "types": "dts-generator --name \"@activfinancial/oneapi-record-viewer\" --project . --out lib/index.d.ts --main \"@activfinancial/oneapi-record-viewer/src/index\"",
+        "types": "dts-generator --prefix \"@activfinancial/oneapi-record-viewer\" --name \"@activfinancial/oneapi-record-viewer\" --project . --out lib/index.d.ts --main \"@activfinancial/oneapi-record-viewer/src/index\"",
         "build": "yarn types && webpack --mode production",
         "develop": "yarn types && webpack --mode development",
         "test": "echo \"No test specified\"",
         "watch": "webpack --mode development --watch -d",
-        "serve": "webpack-dev-server --mode development -d"
+        "serve": "webpack-dev-server --mode development -d source-map"
     },
     "dependencies": {
-        "@activfinancial/one-api": "^0.5.4",
+        "@activfinancial/one-api": "^0.7.0",
         "skatejs": "5.0.0-beta.3"
     },
     "devDependencies": {
@@ -40,12 +40,12 @@
         "raw-loader": "^4.0.2",
         "sprintf-js": "^1.1.2",
         "text-encoding": "^0.7.0",
-        "ts-loader": "^6.2.1",
-        "typescript": "^3.9.7",
+        "ts-loader": "^9.2.6",
+        "typescript": "^4.5.5",
         "url-loader": "^4.1.1",
-        "webpack": "^4.20.2",
-        "webpack-cli": "^3.1.2",
-        "webpack-dev-server": "^3.1.9"
+        "webpack": "^5.68.0",
+        "webpack-cli": "^4.9.2",
+        "webpack-dev-server": "^4.7.4"
     },
     "gitHead": "d06c30af272d9faa623ae6056ea4c654a5a0a851"
 }

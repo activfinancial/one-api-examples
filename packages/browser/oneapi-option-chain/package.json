@@ -1,11 +1,11 @@
 {
-    "name": "@activfinancial/oneapi-montage-viewer",
-    "description": "A simple montage display using one-api.",
+    "name": "@activfinancial/oneapi-option-chain",
+    "description": "A simple option chain display using one-api.",
     "repository": {
         "type": "git",
         "url": "https://github.com/activfinancial/one-api"
     },
-    "version": "0.6.8",
+    "version": "0.7.0",
     "private": false,
     "publishConfig": {
         "access": "public"
@@ -22,7 +22,7 @@
         "lib/**"
     ],
     "scripts": {
-        "types": "dts-generator --prefix \"@activfinancial/oneapi-montage-viewer\" --name \"@activfinancial/oneapi-montage-viewer\" --project . --out lib/index.d.ts --main \"@activfinancial/oneapi-montage-viewer/src/index\"",
+        "types": "dts-generator --prefix \"@activfinancial/oneapi-option-chain\" --name \"@activfinancial/oneapi-option-chain\" --project . --out lib/index.d.ts --main \"@activfinancial/oneapi-option-chain/src/index\"",
         "build": "yarn types && webpack --mode production",
         "develop": "yarn types && webpack --mode development",
         "test": "echo \"No test specified\"",
@@ -43,6 +43,5 @@
         "webpack": "^5.68.0",
         "webpack-cli": "^4.9.2",
         "webpack-dev-server": "^4.7.4"
-    },
-    "gitHead": "d06c30af272d9faa623ae6056ea4c654a5a0a851"
+    }
 }

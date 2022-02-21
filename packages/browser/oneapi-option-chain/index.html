@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Montage Viewer</title>
+	<title>Option Chain</title>
 	<style>
 		html,
 		body {
@@ -18,7 +18,7 @@
 			flex-direction: column;
 		}
 
-		montage-viewer {
+		option-chain {
 			overflow-y: scroll;
 			flex: 1 0;
 		}
@@ -26,15 +26,17 @@
 </head>
 
 <body>
-	<montage-viewer tag="type=listing and region=NA" datasourceid="1" view="listing" conflationtype="0" conflationinterval="100"></montage-viewer>
+	<option-chain symbol="CAJ." relationship-id="option"></option-chain>
+	<!-- <option-chain symbol="AAPL." relationship-id="option" conflation-type="quote" conflation-interval="100"></option-chain> -->
 	<script src="@activfinancial/one-api/lib/index.js"></script>
 	<script src="./lib/index.js"></script>
+
 	<script>
 		(() => {
 			const clientPromise = activOneApi.connect({
 				// user: "USERNAME",
 				// password: "PASSWORD",
-				host: "aop-ny4-replay.activfinancial.com",
+				// host: "aop-ny4-replay.activfinancial.com",
 				isDictionaryDownloadEnabled: true,
 				// dictionaryDownloadList: "1",
 				onLogMessage(logType, message) {
@@ -42,9 +44,9 @@
 				}
 			});
 
-			const montageViewers = document.querySelectorAll("montage-viewer");
-			for (const montageViewer of montageViewers) {
-				montageViewer.connect(clientPromise);
+			const optionChains = document.querySelectorAll("option-chain");
+			for (const optionChain of optionChains) {
+				optionChain.connect(clientPromise);
 			}
 		})();
 	</script>
