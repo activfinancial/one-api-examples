@@ -5,7 +5,7 @@
         "type": "git",
         "url": "https://github.com/activfinancial/one-api"
     },
-    "version": "0.7.0",
+    "version": "0.7.7",
     "private": false,
     "publishConfig": {
         "access": "public"
@@ -30,7 +30,7 @@
         "serve": "webpack-dev-server --mode development -d source-map"
     },
     "dependencies": {
-        "@activfinancial/one-api": "^0.7.0",
+        "@activfinancial/one-api": "^0.8.2",
         "skatejs": "5.0.0-beta.3"
     },
     "devDependencies": {

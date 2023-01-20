@@ -21,7 +21,8 @@ import {
     TopicQueryResult,
     Handle,
     Dictionary,
-    TopicId
+    TopicId,
+    SymbologyId
 } from "@activfinancial/one-api";
 
 import {
@@ -43,6 +44,7 @@ import indexCss from "!raw-loader!../style/index.css";
 import indexHtml from "!raw-loader!./index.html";
 import optionRowHtml from "!raw-loader!./optionRow.html";
 import expirationSectionHtml from "!raw-loader!./expirationSection.html";
+import optionContextMenuHtml from "!raw-loader!./optionContextMenu.html";
 
 // ---------------------------------------------------------------------------------------------------------------------------------
 
@@ -74,6 +76,7 @@ interface ExpirationSection {
 
 interface OptionSubscription {
     subscriptionHandle: SubscriptionHandle;
+    exchangeName: string;
     expirationSection?: ExpirationSection;
     row?: OptionRow;
     updateOption?: (image: SubscriptionMessage) => void;
@@ -98,7 +101,9 @@ const percentFormat = {
 // TODO surely we can automagically generate this (or vice-versa) from the props static below? Too much repetition.
 /** Attributes interface. */
 interface Attributes {
+    datasourceid: DataSourceId;
     symbol: string;
+    symbologyid: SymbologyId;
     "relationship-id": string;
     "conflation-type": "none" | keyof typeof ConflationType;
     "conflation-interval": number;
@@ -131,13 +136,12 @@ class OptionChain extends withProps(withRenderer(withUnique(HTMLElement))) {
     private priceFormat?: NumberFormat;
 
     private readonly underlyingFieldInfo: UnderlyingFieldInfo = {};
-    private readonly underlyingFieldIds: FieldId[];
-    private readonly optionFieldIds: FieldId[];
 
     // props.
     private datasourceid: DataSourceId = DataSourceId.activ;
     private symbol: string = "";
-    private relationshipId: string = "nbboOption";
+    private symbologyid: number = SymbologyId.native;
+    private relationshipId: string = "option";
     private conflationtype: number = ConflationType.none;
     private conflationinterval: number = 100;
 
@@ -151,6 +155,7 @@ class OptionChain extends withProps(withRenderer(withUnique(HTMLElement))) {
     static props = {
         datasourceid: props.number,
         symbol: props.string,
+        symbologyid: props.number,
         relationshipId: props.string,
         conflationtype: props.number,
         conflationinterval: props.number
@@ -166,19 +171,33 @@ class OptionChain extends withProps(withRenderer(withUnique(HTMLElement))) {
         this.renderRoot.appendChild(element);
         this.rootElement = element;
 
+        const contextMenuElement = document.createElement("div");
+        contextMenuElement.className = "option-chain-option-context-menu";
+        contextMenuElement.innerHTML = optionContextMenuHtml;
+        element.appendChild(contextMenuElement);
+
         // TODO: Watch for resizes so we can add/remove columns.
 
         this.options = element.querySelector(".option-chain-options") as HTMLDivElement;
         this.status = element.querySelector(".option-chain-status") as HTMLDivElement;
         this.overlay = element.querySelector(".option-chain-overlay") as HTMLDivElement;
 
-        // Find all elements mapping to field ids in the underlying header and cache them.
-        const underlyingFieldIds: FieldId[] = [FieldId.FID_CLOSE, FieldId.FID_CURRENCY];
+        element.addEventListener("click", () => {
+            if (contextMenuElement.style.display != "none") contextMenuElement.style.display = "none";
+        });
 
+        for (const node of Array.from(contextMenuElement.querySelectorAll(".option-chain-option-context-menu-item"))) {
+            const element = node as HTMLElement;
+            element.addEventListener("click", () => {
+                const valueElement = element.querySelector(".option-chain-option-context-menu-item-value") as HTMLDivElement;
+                navigator.clipboard.writeText(valueElement.textContent!);
+            });
+        }
+
+        // Find all elements mapping to field ids in the underlying header and cache them.
         for (const node of Array.from(element.querySelectorAll(".option-chain-underlying-header [data-activ-field-id]"))) {
             const element = node as HTMLElement;
             const fieldId = FieldId[node.getAttribute("data-activ-field-id") as keyof typeof FieldId];
-            underlyingFieldIds.push(fieldId);
 
             this.underlyingFieldInfo[fieldId] = {
                 element,
@@ -186,25 +205,11 @@ class OptionChain extends withProps(withRenderer(withUnique(HTMLElement))) {
             };
         }
 
-        this.underlyingFieldIds = underlyingFieldIds;
-
         // Note close price is pointing at the same element as trade price.
         this.underlyingFieldInfo[FieldId.FID_CLOSE] = this.underlyingFieldInfo[FieldId.FID_TRADE];
 
         // Formatting for %change.
         this.underlyingFieldInfo[FieldId.FID_PERCENT_CHANGE]!.rationalNumberFormat = percentFormat;
-
-        // Get list of field ids to request for options.
-        const optionFieldIds: FieldId[] = [FieldId.FID_EXPIRATION_DATE, FieldId.FID_OPTION_TYPE];
-
-        for (const optionElement of Array.from(
-            element.querySelectorAll(".option-chain-call[data-activ-field-id], .option-chain-center-cells[data-activ-field-id]")
-        )) {
-            const fieldId = FieldId[optionElement.getAttribute("data-activ-field-id") as keyof typeof FieldId];
-            optionFieldIds.push(fieldId);
-        }
-
-        this.optionFieldIds = optionFieldIds;
 
         addUnloadHandler(() => this.unsubscribe());
 
@@ -333,6 +338,7 @@ class OptionChain extends withProps(withRenderer(withUnique(HTMLElement))) {
             this.underlyingSubscription = this.session.subscribe(
                 {
                     dataSourceId: this.datasourceid,
+                    symbologyId: this.symbologyid,
                     symbol: this.symbol
                 },
                 this.subscriptionParametersHandle == null ? undefined : this.subscriptionParametersHandle
@@ -363,7 +369,7 @@ class OptionChain extends withProps(withRenderer(withUnique(HTMLElement))) {
                     // Add a new subscription if needed.
                     let option: OptionSubscription | undefined = this.optionSubscriptions.get(result.message.topicId.symbol);
                     if (undefined === option && !result.message.isRemove) {
-                        this.addOptionSubscription(result.message.topicId);
+                        await this.addOptionSubscription(result.message.topicId);
                     }
                 }
 
@@ -377,7 +383,7 @@ class OptionChain extends withProps(withRenderer(withUnique(HTMLElement))) {
                     if (undefined !== result.message) {
                         let option: OptionSubscription | undefined = this.optionSubscriptions.get(result.message.topicId.symbol);
                         if (undefined === option && !result.message.isRemove) {
-                            this.addOptionSubscription(result.message.topicId);
+                            await this.addOptionSubscription(result.message.topicId);
                         }
 
                         if (result.message.isRemove && undefined !== option) {
@@ -393,8 +399,6 @@ class OptionChain extends withProps(withRenderer(withUnique(HTMLElement))) {
     }
 
     private unsubscribe() {
-        this.options.innerHTML = "";
-
         this.optionSubscriptions.forEach((option) => {
             option.subscriptionHandle.delete();
         });
@@ -408,6 +412,8 @@ class OptionChain extends withProps(withRenderer(withUnique(HTMLElement))) {
             this.subscriptionParametersHandle.delete();
             this.subscriptionParametersHandle = null;
         }
+
+        this.options.innerHTML = "";
 
         this.optionChainData = [];
         this.underlyingPrice = 0;
@@ -557,7 +563,7 @@ class OptionChain extends withProps(withRenderer(withUnique(HTMLElement))) {
         }
     }
 
-    private async processOption(option: OptionSubscription, record: SubscriptionMessage) {
+    private processOption(option: OptionSubscription, record: SubscriptionMessage) {
         ++this.responsesReturned;
 
         if (!record.fieldData.isFieldPresent(FieldId.FID_OPTION_TYPE)) {
@@ -591,19 +597,22 @@ class OptionChain extends withProps(withRenderer(withUnique(HTMLElement))) {
             return;
         }
 
-        option.expirationSection = this.createOrFindExpirySection(expirationDateField.value as Date);
-        option.row = await this.createOrFindOptionRow(record.symbol, option.expirationSection, strikePriceField);
-        option.updateOption = isCall ? option.row.updateCallOption : option.row.updatePutOption;
-
-        // Set tooltip to symbol.
-        for (const node of Array.from(
-            option.expirationSection.element.querySelectorAll(`.${OptionChain.getSideClass(isCall)}[data-activ-field-id]`)
-        )) {
-            const element = node as HTMLElement;
-
-            // Tooltip for the symbol.
-            element.title = record.symbol;
+        let localCode = "";
+        if (record.fieldData.isFieldPresent(FieldId.FID_LOCAL_CODE)) {
+            const localCodeField = record.fieldData.getField(FieldId.FID_LOCAL_CODE);
+            if (localCodeField.value != null && localCodeField.type == FieldType.textString)
+                localCode = localCodeField.value as string;
         }
+
+        option.expirationSection = this.createOrFindExpirySection(expirationDateField.value as Date);
+        option.row = this.createOrFindOptionRow(
+            record.symbol,
+            localCode,
+            option.exchangeName,
+            option.expirationSection,
+            strikePriceField
+        );
+        option.updateOption = isCall ? option.row.updateCallOption : option.row.updatePutOption;
 
         option.updateOption(record);
         option.row.updateInTheMoney(null, this.underlyingPrice);
@@ -643,11 +652,13 @@ class OptionChain extends withProps(withRenderer(withUnique(HTMLElement))) {
         return expirationSection;
     }
 
-    private async createOrFindOptionRow(
+    private createOrFindOptionRow(
         symbol: string,
+        localCode: string,
+        exchangeName: string,
         expirationSection: ExpirationSection,
         strikePriceField: Field
-    ): Promise<OptionRow> {
+    ): OptionRow {
         // Key for an option in an expiry date section is strike+root+exchange.
         const root = symbol.slice(0, symbol.indexOf(SymbolSeparator.expirationDateSeparator));
         const exchangeCode = getExchangeCode(symbol);
@@ -681,7 +692,7 @@ class OptionChain extends withProps(withRenderer(withUnique(HTMLElement))) {
             }
         }
 
-        const row = await this.createOptionRow(strikePriceField, root, exchangeCode);
+        const row = this.createOptionRow(symbol, localCode, strikePriceField, root, exchangeCode, exchangeName);
 
         if (index === -1) {
             expirationSection.optionRowsElement.appendChild(row.element);
@@ -750,7 +761,14 @@ class OptionChain extends withProps(withRenderer(withUnique(HTMLElement))) {
         }
     }
 
-    private async createOptionRow(strikePriceField: Field, root: string, exchangeCode: string): Promise<OptionRow> {
+    private createOptionRow(
+        symbol: string,
+        localCode: string,
+        strikePriceField: Field,
+        root: string,
+        exchangeCode: string,
+        exchangeName: string
+    ): OptionRow {
         const rowElement = document.createElement("div");
         rowElement.className = "option-chain-option-row";
         rowElement.innerHTML = optionRowHtml;
@@ -762,7 +780,7 @@ class OptionChain extends withProps(withRenderer(withUnique(HTMLElement))) {
         const exchangeCodeCell = rowElement.querySelector(`[data-activ-field-id="FID_EXCHANGE"]`) as HTMLDivElement;
         exchangeCodeCell.textContent = exchangeCode;
         exchangeCodeCell.style.display = this.isNbbo ? "none" : "";
-        exchangeCodeCell.title = await getExchangeName(exchangeCode, this.session!);
+        exchangeCodeCell.title = exchangeName;
 
         let callFieldInfos: FieldInfo[] = [];
         let putFieldInfos: FieldInfo[] = [];
@@ -770,11 +788,56 @@ class OptionChain extends withProps(withRenderer(withUnique(HTMLElement))) {
         const buildSide = (isCall: boolean) => {
             const fieldInfos = isCall ? callFieldInfos : putFieldInfos;
 
+            const rootElement = this.rootElement;
+            const hostElement = this.renderRoot.host;
             for (const node of Array.from(
                 rowElement.querySelectorAll(`.${OptionChain.getSideClass(isCall)}[data-activ-field-id]`)
             )) {
                 const element = node as HTMLElement;
                 const fieldId = FieldId[node.getAttribute("data-activ-field-id") as keyof typeof FieldId];
+
+                element.title = "Activ symbol: " + symbol + "\nLocal code: " + localCode + "";
+
+                element.addEventListener("contextmenu", (ev: MouseEvent) => {
+                    ev.preventDefault();
+
+                    const contextMenuElement = rootElement.querySelector(".option-chain-option-context-menu") as HTMLDivElement;
+
+                    if (contextMenuElement.style.display == "none") {
+                        const activSymbolElement = contextMenuElement.querySelector(
+                            ".option-chain-option-context-menu-activ-symbol > .option-chain-option-context-menu-item-value"
+                        ) as HTMLDivElement;
+                        activSymbolElement.textContent = symbol;
+
+                        const localCodeElement = contextMenuElement.querySelector(
+                            ".option-chain-option-context-menu-local-code > .option-chain-option-context-menu-item-value"
+                        ) as HTMLDivElement;
+                        localCodeElement.textContent = localCode;
+
+                        const mouseX = ev.pageX - rootElement.offsetLeft + hostElement.scrollLeft;
+                        const mouseY = ev.pageY - rootElement.offsetTop + hostElement.scrollTop;
+                        contextMenuElement.style.display = "block";
+
+                        let positionX;
+                        if (mouseX + contextMenuElement.offsetWidth > rootElement.offsetWidth) {
+                            positionX = mouseX - contextMenuElement.offsetWidth;
+                        } else {
+                            positionX = mouseX;
+                        }
+
+                        let positionY;
+                        if (mouseY + contextMenuElement.offsetHeight > rootElement.offsetHeight) {
+                            positionY = mouseY - contextMenuElement.offsetHeight;
+                        } else {
+                            positionY = mouseY;
+                        }
+
+                        contextMenuElement.style.left = positionX + "px";
+                        contextMenuElement.style.top = positionY + "px";
+                    } else {
+                        contextMenuElement.style.display = "none";
+                    }
+                });
 
                 fieldInfos[fieldId] = {
                     element,
@@ -838,13 +901,14 @@ class OptionChain extends withProps(withRenderer(withUnique(HTMLElement))) {
         };
     }
 
-    private addOptionSubscription(topicId: TopicId) {
+    private async addOptionSubscription(topicId: TopicId) {
         // Initiate the async subscription.
         const option = {
             subscriptionHandle: this.session!.subscribe(
                 topicId,
                 this.subscriptionParametersHandle == null ? undefined : this.subscriptionParametersHandle
-            )
+            ),
+            exchangeName: await getExchangeName(getExchangeCode(topicId.symbol), this.session!)
         } as OptionSubscription;
         this.optionSubscriptions.set(topicId.symbol, option);
 
@@ -859,7 +923,7 @@ class OptionChain extends withProps(withRenderer(withUnique(HTMLElement))) {
                 if (result.statusCode == StatusCode.success && result.message !== undefined) {
                     if (undefined === option.updateOption) {
                         // Process initial refresh.
-                        await this.processOption(option, result.message);
+                        this.processOption(option, result.message);
                     } else {
                         // If we have an update function defined this much be an update.
                         ++this.totalUpdates;

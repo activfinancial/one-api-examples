@@ -25,8 +25,8 @@
         "upgrade-all": "lerna --concurrency 1 exec yarn-upgrade-all",
         "yarn:publish-links": "lerna exec yarn link --",
         "yarn:unpublish-links": "lerna exec yarn unlink --",
-        "yarn:use-links": "yarn link @activfinancial/cg-api && yarn link @activfinancial/cg-api-fsbl",
-        "yarn:disuse-links": "yarn unlink @activfinancial/cg-api && yarn unlink @activfinancial/cg-api-fsbl"
+        "yarn:use-links": "yarn link @activfinancial/one-api",
+        "yarn:disuse-links": "yarn unlink @activfinancial/one-api"
     },
     "devDependencies": {
         "@commitlint/cli": "^8.3.5",

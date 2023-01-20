@@ -20,7 +20,7 @@
 
     "messages": {
         "compilerMessageReporting": {
-            // Weirdness in cg-api types.
+            // Weirdness in one-api types.
             // "(TS2314) Generic type 'IteratorResult<T>' requires 1 type argument(s)."
             "TS2314": {
                 "logLevel": "none",

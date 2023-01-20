@@ -24,7 +24,7 @@
     --shadow-strike-column-background-alt-color: var(--activ-option-chain-strike-column-background-alt-color, #2f2374);
 
     /** --activ-option-chain-at-the-money-color: highlight color for options above/below the money. */
-    --shadow-at-the-money-color: var(--activ-option-chain-at-the-money-color, #4e20f5);
+    --shadow-at-the-money-color: var(--activ-option-chain-at-the-money-color, #8922ff);
 
     box-sizing: border-box;
     font-size: 12px;
@@ -261,4 +261,29 @@
     align-items: center;
     background-color: var(--shadow-background-color);
     z-index: 100;
+}
+
+.option-chain-option-context-menu {
+    display: none;
+    position: absolute;
+    background-color: var(--shadow-background-color);
+    border-color: var(--shadow-table-row-background-hover-color);
+    border-style: solid;
+    border-width: 0.01rem;
+    border-radius: 5px;
+    z-index: 1;
+    padding: 5px 0;
+}
+
+.option-chain-option-context-menu-item {
+    padding: 2px 5px 2px 5px;
+    cursor: pointer;
+}
+
+.option-chain-option-context-menu-item:hover {
+    background-color: var(--shadow-table-row-background-hover-color);
+}
+
+.option-chain-option-context-menu-item-value {
+    display: inline;
 }

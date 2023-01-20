@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.11](https://github.com/activfinancial/one-api/compare/@activfinancial/oneapi-montage-viewer@0.6.10...@activfinancial/oneapi-montage-viewer@0.6.11) (2022-10-19)
+
+**Note:** Version bump only for package @activfinancial/oneapi-montage-viewer
+
+
+
+
+
+## [0.6.10](https://github.com/activfinancial/one-api/compare/@activfinancial/oneapi-montage-viewer@0.6.9...@activfinancial/oneapi-montage-viewer@0.6.10) (2022-05-16)
+
+**Note:** Version bump only for package @activfinancial/oneapi-montage-viewer
+
+
+
+
+
+## [0.6.9](https://github.com/activfinancial/one-api/compare/@activfinancial/oneapi-montage-viewer@0.6.8...@activfinancial/oneapi-montage-viewer@0.6.9) (2022-05-12)
+
+
+### Bug Fixes
+
+* **samples:** correct one-api package version. ([fa9effc](https://github.com/activfinancial/one-api/commit/fa9effcd49678ffa4b2c8d80d1412e6a890b54cf))
+
+
+
+
+
 ## [0.6.8](https://github.com/activfinancial/one-api/compare/@activfinancial/oneapi-montage-viewer@0.6.7...@activfinancial/oneapi-montage-viewer@0.6.8) (2022-02-21)
 
 **Note:** Version bump only for package @activfinancial/oneapi-montage-viewer
